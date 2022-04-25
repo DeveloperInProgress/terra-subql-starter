@@ -1,28 +1,16 @@
-type Block @entity {
-  id: ID! # The block hash
-  height: BigInt!
+type NftContractInstantiation @entity {
+  id: ID!
+  creator: String!
+  codeId: Int!
+  contractAddress: String!
+  name: String!
+  symbol: String!
 }
 
-type TransferEvent @entity {
+type SendNFT @entity {
   id: ID!
-  blockHeight: BigInt!
-  txHash: String!
-  sender: String
+  nftContract: String!
+  seller: String!
   recipient: String!
-  amount: String!
-}
-
-type Transaction @entity {
-  id: ID!
-  blockHeight: BigInt!
-  timestamp: String!
-}
-
-type Message @entity {
-  id: ID!
-  blockHeight: BigInt!
-  txHash: String!
-  contract: String!
-  sender: String!
-  executeMsg: String!
+  tokenId: String!
 }

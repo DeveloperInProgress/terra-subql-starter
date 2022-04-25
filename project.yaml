@@ -17,30 +17,32 @@ schema:
 network:
   chainId: columbus-5
   endpoint: https://terra-columbus-5.beta.api.onfinality.io
-  dictionary: https://api.subquery.network/sq/subquery/terra-columbus-5-dictionary
+  # dictionary: https://api.subquery.network/sq/subquery/terra-columbus-5-dictionary
   # Optionally provide a mantlemint endpoint to further speed up processing
   mantlemint: "https://mantlemint.terra-columbus-5.beta.api.onfinality.io:1320"
 dataSources:
   - kind: terra/Runtime
-    startBlock: 4724001
+    startBlock: 6402739
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: handleBlock
-          kind: terra/BlockHandler
-        - handler: handleTransaction
-          kind: terra/TransactionHandler
         - handler: handleEvent
           kind: terra/EventHandler
           filter:
-            type: transfer
+            type: instantiate_contract
             messageFilter:
-              type: /terra.wasm.v1beta1.MsgExecuteContract
+              type: /terra.wasm.v1beta1.MsgInstantiateContract
               values:
-                contract: terra1j66jatn3k50hjtg2xemnjm8s7y8dws9xqa5y8w
-        - handler: handleMessage
+                sender: terra1y4747xzrmtdq04a20zuernnrduvt65qlctkzar
+templates:
+  - name: NFTContract
+    kind: terra/Runtime
+    startBlock: 6402739
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleSendNFT
           kind: terra/MessageHandler
           filter:
             type: /terra.wasm.v1beta1.MsgExecuteContract
-            values:
-              contract: terra1j66jatn3k50hjtg2xemnjm8s7y8dws9xqa5y8w
+            contractCall: send_nft
